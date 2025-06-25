@@ -1,9 +1,9 @@
 from openai import AzureOpenAI
 
 # === Azure OpenAI Client Setup ===
-client = AzureOpenAI(azure_endpoint="https://aliba-mcb1ibxe-eastus2.openai.azure.com/",
+client = AzureOpenAI(azure_endpoint="endpoint_url",
 api_version="2024-12-01-preview",
-api_key="3jk4xE5QbiemVn1JGPGD4i5X8DAZzFTG34AuOO4ube83R3KFSIxNJQQJ99BFACHYHv6XJ3w3AAAAACOGtKjJ")
+api_key="api_key")
 
 # === Chat Loop ===
 chat_history = [
