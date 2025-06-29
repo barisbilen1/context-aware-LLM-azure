@@ -66,8 +66,7 @@ while True:
             }
         ]
 
-        # had to create another client because o4-mini is not supported in
-        # westeurope region.
+        # had to create another client because o4-mini is not supported in westeurope region.
         client2 = AzureOpenAI(azure_endpoint=conn_config["azure_endpoint"],
                             api_version=conn_config['api_version'],
                             api_key=conn_config['api_key'])
