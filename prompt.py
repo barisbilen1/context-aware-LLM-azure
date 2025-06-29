@@ -28,6 +28,11 @@ print(f"Embedding generated! Vector length: {len(resume_embedding)}")
 
 # Embedding completed, now provide it along with the prompt to the model
 
+# had to create another client for chat model because o4-mini is not supported in westeurope region.
+client2 = AzureOpenAI(azure_endpoint=conn_config["azure_endpoint"],
+                    api_version=conn_config['api_version'],
+                    api_key=conn_config['api_key'])
+
 while True:
     question = input("\nAsk a question about your resume (or type 'quit' to exit): ").strip()
     if question.lower() == 'quit':
@@ -41,12 +46,8 @@ while True:
     )
     question_embedding = question_response.data[0].embedding
 
-    # Cosine Similarity Function
-    def cosine_similarity(a, b):
-        return dot(a, b) / (norm(a) * norm(b))
-
     # Compute similarity
-    similarity = cosine_similarity(
+    similarity = utils.cosine_similarity(
         np.array(question_embedding),
         np.array(resume_embedding))
     print(f"\nSimilarity Score: {similarity:.4f}")
@@ -65,11 +66,6 @@ while True:
                 "content": f"Resume:\n{resume_text}\n\nQuestion:\n{question}"
             }
         ]
-
-        # had to create another client because o4-mini is not supported in westeurope region.
-        client2 = AzureOpenAI(azure_endpoint=conn_config["azure_endpoint"],
-                            api_version=conn_config['api_version'],
-                            api_key=conn_config['api_key'])
 
         chat_response = client2.chat.completions.create(
             model=conn_config["chat_model"],
