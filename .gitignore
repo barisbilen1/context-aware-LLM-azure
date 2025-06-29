@@ -4,3 +4,4 @@ venv/
 ENV/
 env/
 output.txt
+__pycache__
