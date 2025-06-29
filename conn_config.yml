@@ -1,0 +1,8 @@
+# Configure your Azure OpenAI credentials
+azure_endpoint: "your_endpoint_url"
+api_version: "2024-02-15-preview"
+api_key: "your_api_key"
+
+# model names
+embedding_model: "text-embedding-ada-002-baris"
+chat_model: "o4-mini-baris"

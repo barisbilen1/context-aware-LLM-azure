@@ -3,14 +3,13 @@ from numpy import dot
 from numpy.linalg import norm
 import numpy as np
 
-client = AzureOpenAI(azure_endpoint="endpoint_url",
-api_version="2024-02-15-preview",
-api_key="api_key")
+import utils
 
-# Configure your Azure OpenAI credentials
+conn_config = utils.read_yaml("conn_config.yml")
 
-# Your embedding model deployment name
-embedding_model = "text-embedding-ada-002"  # Change to your deployment name
+client = AzureOpenAI(azure_endpoint=conn_config["azure_endpoint"],
+api_version=conn_config['api_version'],
+api_key=conn_config['api_key'])
 
 # Read the text from output.txt (your resume)
 with open("output.txt", "r", encoding="utf-8") as f:
@@ -18,7 +17,7 @@ with open("output.txt", "r", encoding="utf-8") as f:
 
 # Get embedding from Azure OpenAI
 response = client.embeddings.create(input=resume_text,
-                                model=embedding_model)
+                                model=conn_config["embedding_model"])
 
 # Extract the embedding vector
 resume_embedding = response.data[0].embedding
@@ -65,16 +64,13 @@ if similarity > 0.6:
         }
     ]
 
-    chat_model = "o4-mini-baris"  # Your chat deployment name
-
     # had to create another client because o4-mini is not supported in westeurope region.
-    client2 = AzureOpenAI(azure_endpoint="endpoint_url",
-   api_version="2024-12-01-preview",
-   api_key="api_key")
-
+    client2 = AzureOpenAI(azure_endpoint=conn_config["azure_endpoint"],
+api_version=conn_config['api_version'],
+api_key=conn_config['api_key'])
 
     chat_response = client2.chat.completions.create(
-        model=chat_model,
+        model=conn_config["embedding_model"],
         messages=messages,
         temperature=1
     )

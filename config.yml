@@ -1,0 +1,4 @@
+# localpath of the pdf you want to process
+pdf_local_path: "xxx/yyy/barisbilen_cv_2025.pdf"
+
+similarity_score_threshold: 0.6

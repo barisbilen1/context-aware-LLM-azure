@@ -1,7 +1,10 @@
 import pdfplumber
+import utils
+
+config = utils.read_yaml("config.yml")
 
 # Path to your PDF file
-pdf_path = "####/barisbilen_cv_2025.pdf"
+pdf_path = config["pdf_local_path"]
 
 # Initialize empty string to store text
 full_text = ""
