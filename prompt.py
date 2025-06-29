@@ -28,8 +28,7 @@ print(f"Embedding generated! Vector length: {len(resume_embedding)}")
 
 # Embedding completed, now provide it along with the prompt to the model
 
-#
-# === Take a User Question ===
+# Take the question 
 question = input("\nAsk a question about your resume: ")
 
 # Create embedding for the question
