@@ -6,10 +6,11 @@ import numpy as np
 import utils
 
 conn_config = utils.read_yaml("conn_config.yml")
+config = utils.read_yaml("config.yml")
 
 client = AzureOpenAI(azure_endpoint=conn_config["azure_endpoint"],
-api_version=conn_config['api_version'],
-api_key=conn_config['api_key'])
+                     api_version=conn_config['api_version'],
+                     api_key=conn_config['api_key'])
 
 # Read the text from output.txt (your resume)
 with open("output.txt", "r", encoding="utf-8") as f:
@@ -17,7 +18,7 @@ with open("output.txt", "r", encoding="utf-8") as f:
 
 # Get embedding from Azure OpenAI
 response = client.embeddings.create(input=resume_text,
-                                model=conn_config["embedding_model"])
+                                    model=conn_config["embedding_model"])
 
 # Extract the embedding vector
 resume_embedding = response.data[0].embedding
@@ -25,7 +26,7 @@ resume_embedding = response.data[0].embedding
 # Print embedding (optional — this is a long array of numbers)
 print(f"Embedding generated! Vector length: {len(resume_embedding)}")
 
-### Embedding completed, now provide it along with the prompt to the model
+# Embedding completed, now provide it along with the prompt to the model
 
 #
 # === Take a User Question ===
@@ -45,7 +46,9 @@ def cosine_similarity(a, b):
 
 
 # Compute similarity
-similarity = cosine_similarity(np.array(question_embedding), np.array(resume_embedding))
+similarity = cosine_similarity(
+    np.array(question_embedding),
+    np.array(resume_embedding))
 print(f"\nSimilarity Score: {similarity:.4f}")
 
 
@@ -64,10 +67,11 @@ if similarity > 0.6:
         }
     ]
 
-    # had to create another client because o4-mini is not supported in westeurope region.
+    # had to create another client because o4-mini is not supported in
+    # westeurope region.
     client2 = AzureOpenAI(azure_endpoint=conn_config["azure_endpoint"],
-api_version=conn_config['api_version'],
-api_key=conn_config['api_key'])
+                          api_version=conn_config['api_version'],
+                          api_key=conn_config['api_key'])
 
     chat_response = client2.chat.completions.create(
         model=conn_config["embedding_model"],
@@ -80,8 +84,6 @@ api_key=conn_config['api_key'])
 
 else:
     print("Question is not relevant enough to the resume based on similarity.")
-
-
 
 
 # where did this guy study? in which country and continent?
