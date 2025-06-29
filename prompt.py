@@ -51,9 +51,9 @@ similarity = cosine_similarity(
 print(f"\nSimilarity Score: {similarity:.4f}")
 
 
-# === If Similar, Ask GPT ===
-if similarity > 0.6:
-    print("✅ Question is relevant to the resume. Asking GPT...\n")
+# If Similar Ask GPT, if not print not relevant
+if similarity > config["similarity_score_threshold"]:
+    print("Question is relevant to the resume. Asking GPT...\n")
 
     messages = [
         {
@@ -73,16 +73,13 @@ if similarity > 0.6:
                           api_key=conn_config['api_key'])
 
     chat_response = client2.chat.completions.create(
-        model=conn_config["embedding_model"],
+        model=conn_config["chat_model"],
         messages=messages,
         temperature=1
     )
 
     answer = chat_response.choices[0].message.content
-    print(f"💡 GPT Answer: {answer}")
+    print(f"Answer: {answer}")
 
 else:
     print("Question is not relevant enough to the resume based on similarity.")
-
-
-# where did this guy study? in which country and continent?
